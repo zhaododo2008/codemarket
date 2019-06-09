@@ -32,13 +32,15 @@
 			}
 		},
 		onLoad(event) {
+			console.log('onLoad event start')
 			// 目前在某些平台参数会被主动 decode，暂时这样处理。
 			try {
 				this.banner = JSON.parse(decodeURIComponent(event.query));
 			} catch (error) {
 				this.banner = JSON.parse(event.query);
 			}
-
+			
+			console.log(this.banner)
 			this.getDetail();
 			uni.setNavigationBarTitle({
 				title: this.banner.title

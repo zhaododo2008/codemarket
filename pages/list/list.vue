@@ -96,11 +96,14 @@
 						columnId: tabBar.id,
 						minId: 0,
 						pageSize: 10,
+						pageNo: 1,
 						column: 'id,post_id,title,author_name,cover,published_at,comments_count'
 					},
 					loadingText: '加载中...'
 				});
 			});
+
+			console.log('newsList is ' + JSON.stringify(this.newsList))
 			this.getList();
 		},
 		methods: {
@@ -111,38 +114,38 @@
 					activeTab.requestParams.minId = 0;
 				}
 				this.loadingText = '加载中...';
+
+				console.log('getLIst param is ' + JSON.stringify(activeTab.requestParams))
 				uni.request({
-					url: 'https://unidemo.dcloud.net.cn/api/news',
+					url: 'http://192.168.31.213:9090/api/resource/queryByPage',
+					method: 'POST',
 					data: activeTab.requestParams,
+					dataType: 'json',
+					header: {
+						'content-type': 'application/json'
+					},
 					success: (result) => {
 						if (result.statusCode == 200) {
-							const data = result.data.map((news) => {
-								return {
-									id: news.id,
-									article_type: 1,
-									datetime: friendlyDate(new Date(news.published_at.replace(/\-/g, '/')).getTime()),
-									title: news.title,
-									image_url: news.cover,
-									source: news.author_name,
-									comment_count: news.comments_count,
-									post_id: news.post_id
-								};
-							});
+							let resp = JSON.parse(JSON.stringify(result.data))
+							let data = resp.data.records
+
+							console.log('resp data ' + data)
 							if (action === 1) {
-								activeTab.data = data;
-								this.refreshing = false;
-							} else {
 								data.forEach((news) => {
 									activeTab.data.push(news);
 								});
+								this.refreshing = false;
+							} else {
+
 							}
-							activeTab.requestParams.minId = data[data.length - 1].id;
+							console.log('activeTab.data is ' + JSON.stringify(activeTab.data))
+
 						}
 					}
 				});
 			},
 			goDetail(detail) {
-				console.log('detail is'+JSON.stringify(detail))
+				console.log('detail is' + JSON.stringify(detail))
 				uni.navigateTo({
 					url: '/pages/detail/detail?query=' + encodeURIComponent(JSON.stringify(detail))
 				});
