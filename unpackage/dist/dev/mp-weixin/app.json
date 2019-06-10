@@ -7,7 +7,7 @@
   "subPackages": [],
   "window": {
     "navigationBarTextStyle": "white",
-    "navigationBarTitleText": "新闻资讯",
+    "navigationBarTitleText": "代码市场",
     "navigationBarBackgroundColor": "#2F85FC",
     "backgroundColor": "#FFFFFF"
   },
@@ -21,7 +21,7 @@
         "pagePath": "pages/list/list",
         "iconPath": "static/home.png",
         "selectedIconPath": "static/home-active.png",
-        "text": "资讯"
+        "text": "市场"
       },
       {
         "pagePath": "pages/ucenter/ucenter",

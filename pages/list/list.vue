@@ -58,26 +58,6 @@
 					name: '最新',
 					id: 0,
 					ref: 'new'
-				}, {
-					name: '大公司',
-					id: 23,
-					ref: 'company'
-				}, {
-					name: '内容',
-					id: 223,
-					ref: 'content'
-				}, {
-					name: '消费',
-					id: 221,
-					ref: 'xiaofei'
-				}, {
-					name: '娱乐',
-					id: 225,
-					ref: 'yule'
-				}, {
-					name: '区块链',
-					id: 208,
-					ref: 'qukuailian'
 				}, ]
 			}
 		},
@@ -102,22 +82,24 @@
 					loadingText: '加载中...'
 				});
 			});
-
-			console.log('newsList is ' + JSON.stringify(this.newsList))
 			this.getList();
+			console.log('onLoad finish')
 		},
 		methods: {
 			getList(action = 1) {
 				let activeTab = this.newsList[this.tabIndex];
 				activeTab.requestParams.time = new Date().getTime() + '';
 				if (action === 1) {
-					activeTab.requestParams.minId = 0;
+					activeTab.requestParams.pageNo = 1;
 				}
+				else{
+					activeTab.requestParams.pageNo ++;
+					
+				}
+				console.log('minId is '+activeTab.requestParams.minId)
 				this.loadingText = '加载中...';
-
-				console.log('getLIst param is ' + JSON.stringify(activeTab.requestParams))
 				uni.request({
-					url: 'http://192.168.31.213:9090/api/resource/queryByPage',
+					url: 'https://www.ihomefnt.cn/api/resource/queryByPage',
 					method: 'POST',
 					data: activeTab.requestParams,
 					dataType: 'json',
@@ -126,20 +108,31 @@
 					},
 					success: (result) => {
 						if (result.statusCode == 200) {
+							
 							let resp = JSON.parse(JSON.stringify(result.data))
-							let data = resp.data.records
-
-							console.log('resp data ' + data)
+							let records = resp.data.records
+							const data = records.map((news) => {
+								return {
+									id: news.id,
+									article_type: 1,
+									datetime: friendlyDate(new Date(news.postTime).getTime()),
+									title: news.resume,
+									image_url: news.avatar,
+									html_url: news.link,
+									source: news.author,
+									comment_count: 0,
+									post_id: news.id
+								};
+							});
 							if (action === 1) {
+								activeTab.data = data;
+								this.refreshing = false;
+							} else {
 								data.forEach((news) => {
 									activeTab.data.push(news);
 								});
-								this.refreshing = false;
-							} else {
-
 							}
-							console.log('activeTab.data is ' + JSON.stringify(activeTab.data))
-
+							activeTab.requestParams.minId = data[data.length - 1].id;
 						}
 					}
 				});

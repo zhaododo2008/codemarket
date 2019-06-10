@@ -1,45 +1,38 @@
 {
-	"description": "项目配置文件。",
-	"packOptions": {
-		"ignore": []
-	},
-	"setting": {
-		"urlCheck": false,
-		"newFeature": true
-	},
-	"compileType": "miniprogram",
-	"libVersion": "2.6.4",
-	"appid": "wx23bd460aaacf4576",
-	"projectname": "CodeMarket",
-	"condition": {
-		"search": {
-			"current": -1,
-			"list": []
-		},
-		"conversation": {
-			"current": -1,
-			"list": []
-		},
-		"game": {
-			"current": -1,
-			"list": []
-		},
-		"miniprogram": {
-			"current": 1,
-			"list": [
-				{
-					"name": "",
-					"path": "",
-					"query": "",
-					"id": 0
-				},
-				{
-					"id": 1,
-					"name": "pages/list/list",
-					"pathName": "pages/list/list",
-					"query": ""
-				}
-			]
-		}
-	}
+  "description": "项目配置文件。",
+  "packOptions": {
+    "ignore": []
+  },
+  "setting": {
+    "urlCheck": false
+  },
+  "compileType": "miniprogram",
+  "libVersion": "2.6.4",
+  "appid": "touristappid",
+  "projectname": "CodeMarket",
+  "condition": {
+    "search": {
+      "current": -1,
+      "list": []
+    },
+    "conversation": {
+      "current": -1,
+      "list": []
+    },
+    "game": {
+      "current": -1,
+      "list": []
+    },
+    "miniprogram": {
+      "current": 0,
+      "list": [
+        {
+          "name": "",
+          "path": "",
+          "query": "",
+          "id": 0
+        }
+      ]
+    }
+  }
 }
