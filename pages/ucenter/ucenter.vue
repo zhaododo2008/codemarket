@@ -5,6 +5,12 @@
 			<view class="logo-title">
 				<text class="uer-name">Hi，{{login ? uerInfo.name : '您未登录'}}</text>
 				<text class="go-login navigat-arrow" v-if="!login">&#xe65e;</text>
+				<button type="primary" open-type="getUserInfo" @getuserinfo="getuserinfo" bindgetuserinfo="bindGetUserInfo"
+				 withCredentials="true">
+					微信登录
+				</button>
+
+
 			</view>
 		</view>
 		<view class="center-list">
@@ -55,6 +61,9 @@
 				if (!this.login) {
 					console.log('点击前往登录');
 				}
+			},
+			getuserinfo: function(res1) {
+				console.log(res1.detail)
 			}
 		}
 	}
