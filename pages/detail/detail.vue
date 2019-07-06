@@ -11,7 +11,7 @@
 		</view>
 		<view class="article-content">
 			<view class="uni-padding-wrap">
-				<uParse :content="parentContent" @preview="preview" @navigate="navigate" />
+				<uParse :content="banner.detail" @preview="preview" @navigate="navigate" />
 			</view>
 		</view>
 		<view class="comment-wrap"></view>
@@ -28,7 +28,6 @@
 		data() {
 			return {
 				banner: {},
-				parentContent:''
 			}
 		},
 		onShareAppMessage() {
@@ -42,9 +41,6 @@
 			// 目前在某些平台参数会被主动 decode，暂时这样处理。
 			try {
 				this.banner = JSON.parse(decodeURIComponent(event.query));
-				
-				const cpBanner = Object.assign({},this.banner)
-				this.parentContent = cpBanner.detail
 			} catch (error) {
 				this.banner = JSON.parse(event.query);
 			}
@@ -59,13 +55,10 @@
 				console.log("src: " + src);
 			},
 			navigate(href, e) {
-
 				const url = '/pages/navigator/new-page/new-page' + '?data=' + href
-
 				uni.navigateTo({
 					url: url,
 				})
-
 			}
 		}
 	}
