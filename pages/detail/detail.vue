@@ -10,19 +10,25 @@
 			<text class="article-time">{{banner.datetime}}</text>
 		</view>
 		<view class="article-content">
-			<rich-text :nodes="content"></rich-text>
+			<view class="uni-padding-wrap">
+				<uParse :content="parentContent" @preview="preview" @navigate="navigate" />
+			</view>
 		</view>
 		<view class="comment-wrap"></view>
 	</view>
 </template>
 
 <script>
+	import uParse from '../../components/uParse/src/wxParse.vue'
 	const FAIL_CONTENT = '<p>获取信息失败</p>';
 	export default {
+		components: {
+			uParse
+		},
 		data() {
 			return {
 				banner: {},
-				content: ''
+				parentContent:''
 			}
 		},
 		onShareAppMessage() {
@@ -36,34 +42,38 @@
 			// 目前在某些平台参数会被主动 decode，暂时这样处理。
 			try {
 				this.banner = JSON.parse(decodeURIComponent(event.query));
+				
+				const cpBanner = Object.assign({},this.banner)
+				this.parentContent = cpBanner.detail
 			} catch (error) {
 				this.banner = JSON.parse(event.query);
 			}
-			
-			console.log(this.banner)
-			this.getDetail();
 			uni.setNavigationBarTitle({
 				title: this.banner.title
 			});
 		},
 		methods: {
-			getDetail() {
-				uni.request({
-					url: 'https://unidemo.dcloud.net.cn/api/news/36kr/' + this.banner.post_id,
-					success: (result) => {
-						if (result.statusCode == 200) {
-							this.content = result.data.content;
-						} else {
-							this.content = FAIL_CONTENT;
-						}
-					}
-				});
+
+			preview(src, e) {
+				// do something
+				console.log("src: " + src);
+			},
+			navigate(href, e) {
+
+				const url = '/pages/navigator/new-page/new-page' + '?data=' + href
+
+				uni.navigateTo({
+					url: url,
+				})
+
 			}
 		}
 	}
 </script>
 
 <style>
+	@import url("../../components/uParse/src/wxParse.css");
+
 	.banner {
 		height: 360upx;
 		overflow: hidden;

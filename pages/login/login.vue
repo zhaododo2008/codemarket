@@ -22,15 +22,21 @@
 		</view>
 	</view>
 </template>
-
 <script>
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
+
 	export default {
 		data() {
 			return {
 				title: 'login',
-				providerList: [],
-				hasLogin:false
+				providerList: []
 			}
+		},
+		computed: {
+			...mapState(['hasLogin'])
 		},
 		onLoad() {
 			uni.getProvider({
@@ -72,21 +78,19 @@
 					console.log('获取登录通道失败', error);
 				}
 			});
-
 		},
 		methods: {
+			...mapMutations(['login']),
 			tologin(provider) {
-				console.log('to login is '+provider)
 				uni.login({
 					provider: provider.id,
-					// #ifdef MP-ALIPAY
-					scopes: 'auth_user', //支付宝小程序需设置授权类型
-					// #endif
+                    // #ifdef MP-ALIPAY
+                    scopes: 'auth_user',  //支付宝小程序需设置授权类型
+                    // #endif
 					success: (res) => {
 						console.log('login success:', res);
 						// 更新保存在 store 中的登录状态
-						
-						this.hasLogin = true
+						this.login(provider.id);
 					},
 					fail: (err) => {
 						console.log('login fail:', err);

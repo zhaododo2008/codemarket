@@ -119,6 +119,7 @@
 									title: news.resume,
 									image_url: news.avatar,
 									html_url: news.link,
+									detail: news.detail,
 									source: news.author,
 									comment_count: 0,
 									post_id: news.id
