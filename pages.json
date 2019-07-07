@@ -19,6 +19,11 @@
 			"style": {
 				"navigationBarTitleText": "新页面"
 			}
+		},
+		{
+			"path": "pages/login/login",
+			"style": {
+			}
 		}
 
 	],
@@ -33,7 +38,7 @@
 			"selectedIconPath": "static/home-active.png",
 			"text": "市场"
 		}, {
-			"pagePath": "pages/ucenter/ucenter",
+			"pagePath": "pages/login/login",
 			"iconPath": "static/center.png",
 			"selectedIconPath": "static/center-active.png",
 			"text": "我的"
@@ -41,7 +46,7 @@
 	},
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarTitleText": "代码市场1",
+		"navigationBarTitleText": "代码市场",
 		"navigationBarBackgroundColor": "#2F85FC",
 		"backgroundColor": "#FFFFFF"
 	}

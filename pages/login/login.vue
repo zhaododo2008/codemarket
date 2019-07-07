@@ -1,42 +1,35 @@
 <template>
 	<view>
 		<page-head :title="title"></page-head>
-		<view class="uni-padding-wrap">
-			<view style="background:#FFF; padding:40upx;">
-				<block v-if="hasLogin === true">
-					<view class="uni-h3 uni-center uni-common-mt">已登录</view>
-					<view class="uni-hello-text uni-center">
-						<text>每个账号仅需登录 1 次，\n后续每次进入页面即可自动拉取用户信息。</text>
-					</view>
-				</block>
-				<block v-if="hasLogin === false">
-					<view class="uni-h3 uni-center uni-common-mt">未登录</view>
-					<view class="uni-hello-text uni-center">
-						请点击按钮登录
-					</view>
-				</block>
+		<view class="s-page-wrapper is-100vh">
+			<view class="is-33vh has-mgt-10">
+				<view class="is-flex is-column is-justify-center  is-align-center is-height-100">
+					<image src="../../static/code.png" class="logoimg"></image>
+				</view>
 			</view>
-			<view class="uni-btn-v uni- uni-common-mt">
-				<button type="primary" class="page-body-button" v-for="(value,key) in providerList" @click="tologin(value)" :key="key">{{value.name}}</button>
+			<view class="content">
+				<view class="has-mglr-10 ">
+					<view class=" loginbtn has-radius has-mgtb-20">
+						<button @click="tologin('weixin')"> {{ login.loading ? "已登录":"登 录"}} </button>
+					</view>
+				</view>
 			</view>
 		</view>
 	</view>
 </template>
-<script>
-	import {
-		mapState,
-		mapMutations
-	} from 'vuex'
 
+<script>
 	export default {
 		data() {
 			return {
-				title: 'login',
-				providerList: []
-			}
-		},
-		computed: {
-			...mapState(['hasLogin'])
+				login: {
+					title: 'login',
+					loading: false,
+					providerList: [],
+					hasLogin: false
+				},
+
+			};
 		},
 		onLoad() {
 			uni.getProvider({
@@ -78,22 +71,27 @@
 					console.log('获取登录通道失败', error);
 				}
 			});
+
 		},
 		methods: {
-			...mapMutations(['login']),
 			tologin(provider) {
+				console.log('to login is ' + provider)
 				uni.login({
 					provider: provider.id,
-                    // #ifdef MP-ALIPAY
-                    scopes: 'auth_user',  //支付宝小程序需设置授权类型
-                    // #endif
+					// #ifdef MP-ALIPAY
+					scopes: 'auth_user', //支付宝小程序需设置授权类型
+					// #endif
 					success: (res) => {
 						console.log('login success:', res);
 						// 更新保存在 store 中的登录状态
-						this.login(provider.id);
+
+						this.hasLogin = true;
+						this.login.loading = true;
+
 					},
 					fail: (err) => {
 						console.log('login fail:', err);
+						this.login.loading = false;
 					}
 				});
 			}
@@ -102,8 +100,40 @@
 </script>
 
 <style>
-	button {
-		background-color: #007aff;
-		color: #ffffff;
+	@import url("../../static/css/simplepro.css");
+
+	page {
+		min-height: 100%;
+		background-color: #FFFFFF;
+	}
+
+	.content {
+		width: 85%;
+		margin: 0 auto;
+	}
+
+	.loginbtn button {
+		margin-top: 20rpx;
+		height: 88rpx;
+		width: 100%;
+		line-height: 88rpx;
+		color: #FFFFFF;
+		font-size: 32rpx;
+		border-radius: 44rpx;
+		outline: 0;
+		display: block;
+		margin: 0;
+		font-family: inherit;
+		background: #2F85FC;
+		opacity: 0.8;
+	}
+
+	button:after {
+		border: 2rpx solid #f2f2f2;
+	}
+
+	.logoimg {
+		width: 200rpx;
+		height: 200rpx;
 	}
 </style>
