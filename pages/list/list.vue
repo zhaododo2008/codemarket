@@ -92,11 +92,7 @@
 				if (action === 1) {
 					activeTab.requestParams.pageNo = 1;
 				}
-				else{
-					activeTab.requestParams.pageNo ++;
-					
-				}
-				console.log('minId is '+activeTab.requestParams.minId)
+				console.log('minId is ' + activeTab.requestParams.minId)
 				this.loadingText = '加载中...';
 				uni.request({
 					url: 'https://www.ihomefnt.cn/api/resource/queryByPage',
@@ -108,7 +104,7 @@
 					},
 					success: (result) => {
 						if (result.statusCode == 200) {
-							
+
 							let resp = JSON.parse(JSON.stringify(result.data))
 							let records = resp.data.records
 							const data = records.map((news) => {
@@ -133,7 +129,11 @@
 									activeTab.data.push(news);
 								});
 							}
-							activeTab.requestParams.minId = data[data.length - 1].id;
+							activeTab.requestParams.pageNo = resp.data.current + 1;
+
+							if (activeTab.requestParams.pageNo > resp.data.pages) {
+								this.loadingText = '没有数据了^o^';
+							}
 						}
 					}
 				});

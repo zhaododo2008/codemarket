@@ -28,7 +28,7 @@
 					providerList: [],
 					hasLogin: false
 				},
-
+				u_token_val:''
 			};
 		},
 		onLoad() {
@@ -75,6 +75,11 @@
 		},
 		methods: {
 			tologin(provider) {
+				const u_token_key = 'u_token_key';
+				let u_token_val = this.u_token_val;
+				u_token_val = uni.getStorageSync(u_token_key);
+				console.log('u_token_val is '+ JSON.stringify(u_token_val))
+				
 				console.log('to login is ' + provider)
 				uni.login({
 					provider: provider.id,
@@ -84,16 +89,20 @@
 					success: (res) => {
 						console.log('login success:', res);
 						// 更新保存在 store 中的登录状态
-
+				
 						this.hasLogin = true;
 						this.login.loading = true;
-
+						uni.setStorageSync(u_token_key,res.code);
+						
+				
 					},
 					fail: (err) => {
 						console.log('login fail:', err);
 						this.login.loading = false;
 					}
 				});
+
+
 			}
 		}
 	}
